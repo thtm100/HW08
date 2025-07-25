@@ -19,9 +19,10 @@ void AHealingItem::ActivateItem(AActor* Activator)
 		if (ASpartaCharacter* PlayerCharacter = Cast<ASpartaCharacter>(Activator))
 		{
 			PlayerCharacter->AddHealth(HealAmount);
+
+			PlayerCharacter->ApplySpeedDebuff(5.f, 0.5f);
 		}
 		
-
 		DestroyItem();
 	}
 	

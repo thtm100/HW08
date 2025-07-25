@@ -6,6 +6,7 @@
 
 class UInputMappingContext;
 class UInputAction;
+class UUserWidget;
 
 UCLASS()
 class SPARTAPROJECT_API ASpartaPlayerController : public APlayerController

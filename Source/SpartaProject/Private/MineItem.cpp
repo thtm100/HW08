@@ -2,6 +2,8 @@
 
 
 #include "MineItem.h"
+
+#include "SpartaCharacter.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystemComponent.h"
@@ -76,6 +78,11 @@ void AMineItem::Explode()
 				this,
 				UDamageType::StaticClass()
 			);
+
+			if (ASpartaCharacter* PlayerCharacter = Cast<ASpartaCharacter>(Actor))
+			{
+				PlayerCharacter->ApplyReverseControlDebuff(5.f);
+			}
 		}
 	}
 

@@ -12,8 +12,8 @@
 ASpartaPlayerController::ASpartaPlayerController()
 	: InputMappingContext(nullptr), 
 	MoveAction(nullptr), 
-	LookAction(nullptr), 
-	JumpAction(nullptr), 
+	JumpAction(nullptr),
+	LookAction(nullptr),
 	SprintAction(nullptr),
 	HUDWidgetClass(nullptr),
 	HUDWidgetInstance(nullptr),
@@ -27,12 +27,12 @@ void ASpartaPlayerController::ShowGameHUD()
 {
 	if (HUDWidgetInstance)
 	{
-		HUDWidgetInstance->RemoveFromViewport();
+		HUDWidgetInstance->RemoveFromParent();
 		HUDWidgetInstance = nullptr;
 	}
 	if (MainMenuWidgetInstance)
 	{
-		MainMenuWidgetInstance->RemoveFromViewport();
+		MainMenuWidgetInstance->RemoveFromParent();
 		MainMenuWidgetInstance = nullptr;
 	}
 
@@ -61,12 +61,12 @@ void ASpartaPlayerController::ShowMainMenu(bool bIsRestart)
 {
 	if (HUDWidgetInstance)
 	{
-		HUDWidgetInstance->RemoveFromViewport();
+		HUDWidgetInstance->RemoveFromParent();
 		HUDWidgetInstance = nullptr;
 	}
 	if (MainMenuWidgetInstance)
 	{
-		MainMenuWidgetInstance->RemoveFromViewport();
+		MainMenuWidgetInstance->RemoveFromParent();
 		MainMenuWidgetInstance = nullptr;
 	}
 

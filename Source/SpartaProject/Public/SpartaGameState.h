@@ -6,6 +6,13 @@
 #include "GameFramework/GameState.h"
 #include "SpartaGameState.generated.h"
 
+class ASpawnVolume;
+class ACoinItem;
+class ASpikeTrap;
+class ASpartaPlayerController;
+class USpartaGameInstance;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWaveStarted, int32, WaveNumber);
 /**
  * 
  */
@@ -24,9 +31,10 @@ public:
 	FTimerHandle LevelTimerHandle;
 
 	void StartLevel();
-	void OnLevelTimeUp();
 	void EndLevel();
-
+	void StartWave();
+	void EndWave();
+	void OnWaveTimeUp();
 	void OnCoinCollected();
 
 	UFUNCTION(BlueprintCallable, Category = "Level")
@@ -34,14 +42,44 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Level")
 	int32 CurrentLevelIndex;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Level")
-	float LevelDuration;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Level")
 	int32 MaxLevel;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Level")
 	TArray<FName> LevelMapNames;
 
+#pragma endregion
+
+#pragma region Wave
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wave")
+	int32 CurrentWaveIndex;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Wave")
+	int32 MaxWave;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Wave")
+	float WaveDuration;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Wave")
+	TArray<int32> ItemsToSpawnPerWave;
+
+	UPROPERTY(BlueprintAssignable, Category = "Wave")
+	FOnWaveStarted OnWaveStarted;
+
+private:
+	UPROPERTY()
+	TArray<AActor*> CurrentWaveItems;
+
+	void EnableWave2();
+	void EnableWave3();
+	void SetAllCoinsMove(bool bActive);
+
+	ASpawnVolume* GetSpawnVolume() const;
+	ASpartaPlayerController* GetSpartaPlayerController() const;
+	USpartaGameInstance* GetSpartaGameInstance() const;
+	
 #pragma endregion
 
 #pragma region CoinScore
@@ -63,11 +101,19 @@ public:
 
 #pragma endregion
 
+#pragma region SpikeTrap
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Wave|Hazard")
+	TSubclassOf<AActor> SpikeTrapClass;
+
+#pragma endregion
+
 #pragma region HUD
 
 public:
 	void UpdateHUD();
 
+	FTimerHandle WaveTimerHandle;
 	FTimerHandle HUDUpdateTimerHandle;
 
 #pragma endregion
